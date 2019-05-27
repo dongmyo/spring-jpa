@@ -3,21 +3,18 @@ package com.nhn.edu.jpa.service;
 import com.nhn.edu.jpa.entity.Member;
 import com.nhn.edu.jpa.entity.MemberDetail;
 import com.nhn.edu.jpa.repository.MemberDetailRepository;
-import com.nhn.edu.jpa.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Service
 public class MemberService {
-    private final MemberRepository memberRepository;
     private final MemberDetailRepository memberDetailRepository;
 
 
-    public MemberService(MemberRepository memberRepository,
-                         MemberDetailRepository memberDetailRepository) {
-        this.memberRepository = memberRepository;
+    public MemberService(MemberDetailRepository memberDetailRepository) {
         this.memberDetailRepository = memberDetailRepository;
     }
 
@@ -28,21 +25,17 @@ public class MemberService {
         member.setName("member1");
         member.setCreateDate(LocalDateTime.now());
 
-        Member savedMember = memberRepository.save(member);
-
         MemberDetail memberDetail1 = new MemberDetail();
-        memberDetail1.setMember(savedMember);
+        memberDetail1.setMember(member);
         memberDetail1.setType("type1");
         memberDetail1.setDescription("member1-type1");
 
-        memberDetailRepository.save(memberDetail1);
-
         MemberDetail memberDetail2 = new MemberDetail();
-        memberDetail2.setMember(savedMember);
+        memberDetail2.setMember(member);
         memberDetail2.setType("type2");
         memberDetail2.setDescription("member1-type2");
 
-        memberDetailRepository.save(memberDetail2);
+        memberDetailRepository.saveAll(Arrays.asList(memberDetail1, memberDetail2));
     }
 
 }
