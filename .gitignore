@@ -1,0 +1,23 @@
+*.class
+*~
+
+# ignore eclipse or spring settings
+.project
+.classpath
+.settings/
+.springBeans
+
+# ignore intelij or webstorm settings
+*.iml
+.idea/
+deploy/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+/target/
+
+*.bak
+
