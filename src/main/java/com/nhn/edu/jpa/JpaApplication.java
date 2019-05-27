@@ -1,6 +1,7 @@
 package com.nhn.edu.jpa;
 
 import com.nhn.edu.jpa.service.MemberService;
+import com.nhn.edu.jpa.service.OrderService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,9 +18,10 @@ public class JpaApplication {
 	}
 
 	@Bean
-	CommandLineRunner onStartUp(MemberService memberService) {
+	CommandLineRunner onStartUp(MemberService memberService, OrderService orderService) {
 		return args -> {
 			memberService.doSomething();
+			orderService.doSomething();
 		};
 	}
 
