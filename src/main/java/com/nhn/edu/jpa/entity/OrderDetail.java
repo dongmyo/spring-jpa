@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -22,7 +24,8 @@ public class OrderDetail {
 
     private String description;
 
-    // TODO: 연관관계 맵핑
+    @ManyToOne
+    @MapsId("orderId")
     private Order order;
 
 
