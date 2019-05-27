@@ -24,25 +24,26 @@ public class MemberService {
 
     @Transactional
     public void doSomething() {
+        MemberDetail memberDetail1 = new MemberDetail();
+        memberDetail1.setType("type1");
+        memberDetail1.setDescription("member1-type1");
+
+        MemberDetail savedMemberDetail1 = memberDetailRepository.save(memberDetail1);
+
+        MemberDetail memberDetail2 = new MemberDetail();
+        memberDetail2.setType("type2");
+        memberDetail2.setDescription("member1-type2");
+
+        MemberDetail savedMemberDetail2 = memberDetailRepository.save(memberDetail2);
+
         Member member = new Member();
         member.setName("member1");
         member.setCreateDate(LocalDateTime.now());
 
-        Member savedMember = memberRepository.save(member);
+        member.getDetails().add(savedMemberDetail1);
+        member.getDetails().add(savedMemberDetail2);
 
-        MemberDetail memberDetail1 = new MemberDetail();
-        memberDetail1.setMember(savedMember);
-        memberDetail1.setType("type1");
-        memberDetail1.setDescription("member1-type1");
-
-        memberDetailRepository.save(memberDetail1);
-
-        MemberDetail memberDetail2 = new MemberDetail();
-        memberDetail2.setMember(savedMember);
-        memberDetail2.setType("type2");
-        memberDetail2.setDescription("member1-type2");
-
-        memberDetailRepository.save(memberDetail2);
+        memberRepository.save(member);
     }
 
 }
