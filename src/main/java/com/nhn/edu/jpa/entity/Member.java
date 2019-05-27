@@ -31,7 +31,7 @@ public class Member {
     @Column(name = "create_dt")
     private LocalDateTime createDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private List<MemberDetail> details = new ArrayList<>();
 
