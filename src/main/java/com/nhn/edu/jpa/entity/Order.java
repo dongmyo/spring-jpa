@@ -26,10 +26,12 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
+    @OrderColumn
     private List<OrderItem> orderItems;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
+    @OrderColumn
     private List<OrderAttribute> attributes;
 
 }
