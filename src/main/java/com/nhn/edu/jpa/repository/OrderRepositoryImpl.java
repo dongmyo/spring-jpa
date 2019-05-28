@@ -41,26 +41,23 @@ public class OrderRepositoryImpl extends QuerydslRepositorySupport
         QOrderItem orderItem = QOrderItem.orderItem;
         QItem item = QItem.item;
 
-        // TODO #1 : pagination query
-        JPQLQuery<Long> query = from(order).select(order.orderId);
-        JPQLQuery<Long> pagedQuery = getQuerydsl().applyPagination(pageable, query);
+        // TODO : pagination + fetch join ???
+        JPQLQuery<Order> query = from(order)
+                .innerJoin(order.customer, customer)/*.fetchJoin()*/
+                .leftJoin(order.orderItems, orderItem)/*.fetchJoin()*/
+                .innerJoin(orderItem.item, item)/*.fetchJoin()*/;
+
+        JPQLQuery<Order> pagedQuery = getQuerydsl().applyPagination(pageable, query);
 
         long totalCount = 0L;
+
         try {
             totalCount = pagedQuery.fetchCount();
-        } catch (NoResultException ex) {
+        } catch (NoResultException e) {
             // ignore
         }
 
-        List<Long> ids = pagedQuery.fetch();
-
-        // TODO #2 : fetch join
-        List<Order> list = from(order)
-                .innerJoin(order.customer, customer).fetchJoin()
-                .leftJoin(order.orderItems, orderItem).fetchJoin()
-                .innerJoin(orderItem.item, item).fetchJoin()
-                .where(order.orderId.in(ids))
-                .fetch();
+        List<Order> list = pagedQuery.fetch();
 
         return new PageImpl<>(list, pageable, totalCount);
     }
