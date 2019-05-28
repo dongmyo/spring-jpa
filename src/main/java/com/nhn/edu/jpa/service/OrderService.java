@@ -8,7 +8,6 @@ import com.nhn.edu.jpa.repository.CustomerRepository;
 import com.nhn.edu.jpa.repository.ItemRepository;
 import com.nhn.edu.jpa.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -107,13 +104,36 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<Item> getMultiWithOrderItems() {
-        return orderRepository.findAll()
-                              .stream()
-                              .map(Order::getOrderItems)
-                              .flatMap(Collection::stream)
-                              .map(OrderItem::getItem)
-                              .collect(Collectors.toList());
+    public List<Item> getOrdersByFindAll() {
+        return getAllItems(orderRepository.findAll());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> getOrdersWithCustomer() {
+        return getAllItems(orderRepository.getAllBy());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> getOrdersWithOrderItems() {
+        return getAllItems(orderRepository.readAllBy());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> getOrdersWithCustomerAndOrderItems() {
+        return getAllItems(orderRepository.queryAllBy());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> getOrdersWithCustomerAndOrderItemsAndItem() {
+        return getAllItems(orderRepository.findAllBy());
+    }
+
+    private List<Item> getAllItems(List<Order> orders) {
+        return orders.stream()
+                     .map(Order::getOrderItems)
+                     .flatMap(Collection::stream)
+                     .map(OrderItem::getItem)
+                     .collect(Collectors.toList());
     }
 
 }
