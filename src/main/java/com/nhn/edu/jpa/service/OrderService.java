@@ -108,7 +108,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<Item> getMultiWithOrderItems() {
-        return orderRepository.findAll()
+        return orderRepository.getOrdersWithAssociations()
                               .stream()
                               .map(Order::getOrderItems)
                               .flatMap(Collection::stream)
