@@ -9,6 +9,8 @@ import com.nhn.edu.jpa.repository.ItemRepository;
 import com.nhn.edu.jpa.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -108,12 +110,21 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<Item> getMultiWithOrderItems() {
-        return orderRepository.getOrdersWithAssociations()
-                              .stream()
-                              .map(Order::getOrderItems)
-                              .flatMap(Collection::stream)
-                              .map(OrderItem::getItem)
-                              .collect(Collectors.toList());
+        return getAllItems(orderRepository.getOrdersWithAssociations());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Item> getPagedItems(int page, int size) {
+        return getAllItems(orderRepository.findAll(PageRequest.of(page, size)).getContent());
+//        return getAllItems(orderRepository.getPagedOrderWithAssociations(PageRequest.of(page, size)).getContent());
+    }
+
+    private List<Item> getAllItems(List<Order> orders) {
+        return orders.stream()
+                     .map(Order::getOrderItems)
+                     .flatMap(Collection::stream)
+                     .map(OrderItem::getItem)
+                     .collect(Collectors.toList());
     }
 
 }
