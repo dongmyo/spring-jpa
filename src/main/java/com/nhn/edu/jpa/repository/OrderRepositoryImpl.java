@@ -41,7 +41,6 @@ public class OrderRepositoryImpl extends QuerydslRepositorySupport
         QOrderItem orderItem = QOrderItem.orderItem;
         QItem item = QItem.item;
 
-        // TODO #1 : pagination query
         JPQLQuery<Long> query = from(order).select(order.orderId);
         JPQLQuery<Long> pagedQuery = getQuerydsl().applyPagination(pageable, query);
 
@@ -54,7 +53,6 @@ public class OrderRepositoryImpl extends QuerydslRepositorySupport
 
         List<Long> ids = pagedQuery.fetch();
 
-        // TODO #2 : fetch join
         List<Order> list = from(order)
                 .innerJoin(order.customer, customer).fetchJoin()
                 .leftJoin(order.orderItems, orderItem).fetchJoin()
