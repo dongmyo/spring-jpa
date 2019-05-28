@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,8 +75,8 @@ public class OrderService {
         Order order1_1 = new Order();
         order1_1.setCustomer(customer1);
         order1_1.setOrderDate(LocalDateTime.now());
-        order1_1.setOrderItems(Arrays.asList(orderItem1_1, orderItem1_2));
-        order1_1.setAttributes(Collections.singletonList(attribute1_1));
+        order1_1.setOrderItems(new HashSet<>(Arrays.asList(orderItem1_1, orderItem1_2)));
+        order1_1.setAttributes(new HashSet<>(Collections.singletonList(attribute1_1)));
         orderRepository.save(order1_1);
 
         Customer customer2 = new Customer();
@@ -89,7 +90,7 @@ public class OrderService {
         Order order2_1 = new Order();
         order2_1.setCustomer(customer2);
         order2_1.setOrderDate(LocalDateTime.now());
-        order2_1.setOrderItems(Collections.singletonList(orderItem2_1));
+        order2_1.setOrderItems(new HashSet<>(Collections.singletonList(orderItem2_1)));
         orderRepository.save(order2_1);
 
         OrderItem orderItem2_2 = new OrderItem();
@@ -105,8 +106,8 @@ public class OrderService {
         Order order2_2 = new Order();
         order2_2.setCustomer(customer2);
         order2_2.setOrderDate(LocalDateTime.now());
-        order2_2.setOrderItems(Collections.singletonList(orderItem2_2));
-        order2_2.setAttributes(Arrays.asList(attribute2_1, attribute2_2));
+        order2_2.setOrderItems(new HashSet<>(Collections.singletonList(orderItem2_2)));
+        order2_2.setAttributes(new HashSet<>(Arrays.asList(attribute2_1, attribute2_2)));
         orderRepository.save(order2_2);
     }
 
