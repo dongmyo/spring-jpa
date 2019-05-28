@@ -115,8 +115,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<Item> getPagedItems(int page, int size) {
-        return getAllItems(orderRepository.findAll(PageRequest.of(page, size)).getContent());
-//        return getAllItems(orderRepository.getPagedOrderWithAssociations(PageRequest.of(page, size)).getContent());
+        return getAllItems(orderRepository.getPagedOrderWithAssociations(PageRequest.of(page, size)).getContent());
     }
 
     private List<Item> getAllItems(List<Order> orders) {
