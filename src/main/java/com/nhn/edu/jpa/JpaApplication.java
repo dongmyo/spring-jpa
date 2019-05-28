@@ -1,5 +1,6 @@
 package com.nhn.edu.jpa;
 
+import com.nhn.edu.jpa.service.MemberService;
 import com.nhn.edu.jpa.service.OrderService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,12 +18,16 @@ public class JpaApplication {
 	}
 
 	@Bean
-	CommandLineRunner onStartUp(OrderService orderService) {
+	CommandLineRunner onStartUp(OrderService orderService,
+								MemberService memberService) {
 		return args -> {
 			orderService.setUp();
 			orderService.getOne();
 			orderService.getMulti();
 			orderService.getMultiWithOrderItems();
+
+			memberService.setUp();
+			memberService.getAllMemberDescriptions();
 		};
 	}
 
