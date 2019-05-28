@@ -51,7 +51,7 @@ public class ProjectService {
     }
 
     public List<ProjectMember> getProjectMembers(Long projectId) {
-        return projectMemberRepository.findByProject_ProjectId(projectId);
+        return projectMemberRepository.getProjectMembers(projectId);
     }
 
 }
