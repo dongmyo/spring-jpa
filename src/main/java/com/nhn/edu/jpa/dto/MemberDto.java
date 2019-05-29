@@ -10,5 +10,5 @@ package com.nhn.edu.jpa.dto;
     }]
 }
  */
-public class MemberDto {
+public interface MemberDto {
 }
