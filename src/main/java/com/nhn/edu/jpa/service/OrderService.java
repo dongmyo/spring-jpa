@@ -1,5 +1,8 @@
 package com.nhn.edu.jpa.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhn.edu.jpa.dto.OrderDto;
 import com.nhn.edu.jpa.entity.Customer;
 import com.nhn.edu.jpa.entity.Item;
 import com.nhn.edu.jpa.entity.Order;
@@ -114,6 +117,12 @@ public class OrderService {
                               .flatMap(Collection::stream)
                               .map(OrderItem::getItem)
                               .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public String getOrdersAsJson() throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter()
+                                 .writeValueAsString(orderRepository.findAllBy());
     }
 
 }
