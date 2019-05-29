@@ -1,12 +1,16 @@
 package com.nhn.edu.jpa;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhn.edu.jpa.service.ItemService;
 import com.nhn.edu.jpa.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+@Slf4j
 @SpringBootApplication
 public class JpaApplication {
 
@@ -17,12 +21,19 @@ public class JpaApplication {
 	}
 
 	@Bean
-	CommandLineRunner onStartUp(OrderService orderService) {
+	CommandLineRunner onStartUp(OrderService orderService,
+								ItemService itemService) {
 		return args -> {
+			itemService.setUp();
+
+			long price = 200L;
+
+			log.debug("items greater than {} : {}",
+					  price,
+					  itemService.getItemNamesByPriceMoreThan(100).size());
+
 			orderService.setUp();
-			orderService.getOne();
-			orderService.getMulti();
-			orderService.getMultiWithOrderItems();
+			log.debug("orders={}", orderService.getOrdersAsJson());
 		};
 	}
 
