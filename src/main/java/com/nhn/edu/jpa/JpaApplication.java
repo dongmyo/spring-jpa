@@ -1,7 +1,7 @@
 package com.nhn.edu.jpa;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhn.edu.jpa.service.ItemService;
+import com.nhn.edu.jpa.service.MemberService;
 import com.nhn.edu.jpa.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +22,8 @@ public class JpaApplication {
 
 	@Bean
 	CommandLineRunner onStartUp(OrderService orderService,
-								ItemService itemService) {
+								ItemService itemService,
+								MemberService memberService) {
 		return args -> {
 			itemService.setUp();
 
@@ -34,6 +35,9 @@ public class JpaApplication {
 
 			orderService.setUp();
 			log.debug("orders={}", orderService.getOrdersAsJson());
+
+			memberService.setUp();
+			log.debug("members={}", memberService.getMembersAsJson());
 		};
 	}
 
