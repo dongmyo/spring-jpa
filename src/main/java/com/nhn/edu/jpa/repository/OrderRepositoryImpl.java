@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public class OrderRepositoryImpl extends QuerydslRepositorySupport
@@ -42,9 +43,16 @@ public class OrderRepositoryImpl extends QuerydslRepositorySupport
 
         // TODO #1 : pagination query
         JPQLQuery<Long> query = from(order).select(order.orderId);
+        JPQLQuery<Long> pagedQuery = getQuerydsl().applyPagination(pageable, query);
 
-        List<Long> ids = getQuerydsl().applyPagination(pageable, query)
-                                      .fetch();
+        long totalCount = 0L;
+        try {
+            totalCount = pagedQuery.fetchCount();
+        } catch (NoResultException ex) {
+            // ignore
+        }
+
+        List<Long> ids = pagedQuery.fetch();
 
         // TODO #2 : fetch join
         List<Order> list = from(order)
@@ -54,7 +62,7 @@ public class OrderRepositoryImpl extends QuerydslRepositorySupport
                 .where(order.orderId.in(ids))
                 .fetch();
 
-        return new PageImpl<>(list, pageable, list.size());
+        return new PageImpl<>(list, pageable, totalCount);
     }
 
 }
