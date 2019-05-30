@@ -1,14 +1,19 @@
 package com.nhn.edu.jpa.dto;
 
-// TODO : DTO class를 이용한 entity projection
-/*
-{
-    "name": "",
-    "details": [{
-        "type": "",
-        "description": ""
-    }]
-}
- */
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.List;
+
 public interface MemberDto {
+    String getName();
+    List<MemberDetailDto> getDetails();
+
+    interface MemberDetailDto {
+        @Value("#{target.pk.type}")
+        String getType();
+
+        String getDescription();
+        
+    }
+
 }

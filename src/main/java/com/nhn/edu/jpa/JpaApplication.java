@@ -25,19 +25,9 @@ public class JpaApplication {
 								ItemService itemService,
 								MemberService memberService) {
 		return args -> {
-			itemService.setUp();
-
-			long price = 200L;
-
-			log.debug("items greater than {} : {}",
-					  price,
-					  itemService.getItemNamesByPriceMoreThan(100).size());
-
-			orderService.setUp();
-			log.debug("orders={}", orderService.getOrdersAsJson());
-
 			memberService.setUp();
 			log.debug("members={}", memberService.getMembersAsJson());
+			log.debug("membersByType1={}", memberService.getMembersByTypeAsJson("type1"));
 		};
 	}
 

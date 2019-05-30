@@ -52,4 +52,10 @@ public class MemberService {
                                  .writeValueAsString(memberRepository.findAllBy());
     }
 
+    @Transactional(readOnly = true)
+    public String getMembersByTypeAsJson(String type) throws JsonProcessingException {
+        return new ObjectMapper().writerWithDefaultPrettyPrinter()
+                                 .writeValueAsString(memberRepository.findByDetails_Pk_Type(type));
+    }
+
 }
