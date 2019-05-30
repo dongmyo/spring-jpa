@@ -12,6 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //        select m from Member m inner join MemberDetail md where md.type = ?
     //
     @Question
-    List<Member> changeThistMethodName(String type);
+    List<Member> findByDetails_Pk_Type(String type);
 
 }
