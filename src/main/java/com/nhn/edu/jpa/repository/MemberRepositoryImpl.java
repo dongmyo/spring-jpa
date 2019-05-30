@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public class MemberRepositoryImpl extends QuerydslRepositorySupport
@@ -32,16 +33,23 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport
         QMemberDetail memberDetail = QMemberDetail.memberDetail;
 
         JPQLQuery<Long> query = from(member).select(member.memberId);
+        JPQLQuery<Long> pagedQuery = getQuerydsl().applyPagination(pageable, query);
 
-        List<Long> ids = getQuerydsl().applyPagination(pageable, query)
-                                      .fetch();
+        long totalCount = 0L;
+        try {
+            totalCount = pagedQuery.fetchCount();
+        } catch (NoResultException ex) {
+            // ignore
+        }
+
+        List<Long> ids = pagedQuery.fetch();
 
         List<Member> list = from(member)
                 .innerJoin(member.details, memberDetail).fetchJoin()
                 .where(member.memberId.in(ids))
                 .fetch();
 
-        return new PageImpl<>(list, pageable, list.size());
+        return new PageImpl<>(list, pageable, totalCount);
     }
 
 }
