@@ -32,7 +32,8 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport
         QMember member = QMember.member;
         QMemberDetail memberDetail = QMemberDetail.memberDetail;
 
-        JPQLQuery<Long> query = from(member).select(member.memberId);
+        // TODO #1 : pagination query - pagination 적용해서 ID만 추출.
+        JPQLQuery<Long> query = null;
         JPQLQuery<Long> pagedQuery = getQuerydsl().applyPagination(pageable, query);
 
         long totalCount = 0L;
@@ -44,10 +45,8 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport
 
         List<Long> ids = pagedQuery.fetch();
 
-        List<Member> list = from(member)
-                .innerJoin(member.details, memberDetail).fetchJoin()
-                .where(member.memberId.in(ids))
-                .fetch();
+        // TODO #2 : fetch join을 적용해서 연관관계에 있는 Entity까지 한꺼번에 조회.
+        List<Member> list = null;
 
         return new PageImpl<>(list, pageable, totalCount);
     }
