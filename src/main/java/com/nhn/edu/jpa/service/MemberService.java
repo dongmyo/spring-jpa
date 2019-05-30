@@ -1,13 +1,17 @@
 package com.nhn.edu.jpa.service;
 
-import com.nhn.edu.jpa.entity.Item;
+import com.nhn.edu.jpa.annotation.Question;
 import com.nhn.edu.jpa.entity.Member;
 import com.nhn.edu.jpa.entity.MemberDetail;
 import com.nhn.edu.jpa.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,13 +53,29 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> getAllMemberDescriptions() {
-        return memberRepository.getMembersWithAssociation()
-                               .stream()
-                               .map(Member::getDetails)
-                               .flatMap(Collection::stream)
-                               .map(MemberDetail::getDescription)
-                               .collect(Collectors.toList());
+    public List<String> getType1MembersDescriptions() {
+        Class<?> clazz = Arrays.stream(memberRepository.getClass().getInterfaces())
+                               .filter(iface -> iface.isAssignableFrom(MemberRepository.class))
+                               .findFirst()
+                               .orElse(null);
+
+        Assert.notNull(clazz, "MemberReposity class cannot be null");
+
+        Method questionedMethod = Arrays.stream(clazz.getDeclaredMethods())
+                                        .filter(method -> method.isAnnotationPresent(Question.class))
+                                        .findFirst()
+                                        .orElse(null);
+
+        Assert.notNull(questionedMethod, "@Question annotated method cannot be null");
+
+        List<Member> members = ReflectionTestUtils.invokeMethod(memberRepository, questionedMethod.getName(), "type1");
+
+        return members.stream()
+                      .map(Member::getDetails)
+                      .flatMap(Collection::stream)
+                      .map(MemberDetail::getDescription)
+                      .collect(Collectors.toList());
+
     }
 
 }
