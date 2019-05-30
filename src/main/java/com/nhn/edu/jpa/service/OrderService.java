@@ -51,8 +51,8 @@ public class OrderService {
         orange = itemRepository.save(orange);
 
         Item banana = new Item();
-        orange.setItemName("banana");
-        orange.setItemPrice(300L);
+        banana.setItemName("banana");
+        banana.setItemPrice(300L);
         banana = itemRepository.save(banana);
 
         Customer customer1 = new Customer();
