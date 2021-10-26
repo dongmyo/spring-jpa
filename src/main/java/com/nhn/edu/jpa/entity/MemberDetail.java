@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Getter
@@ -17,5 +15,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "MemberDetails")
 public class MemberDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "member_detail_id")
+    private Long memberDetailId;
+
+    private String type;
+
+    private String description;
 
 }
