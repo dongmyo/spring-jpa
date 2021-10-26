@@ -17,5 +17,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "MemberDetails")
 public class MemberDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "member_detail_id")
+    private Long memberDetailId;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    private String type;
+
+    private String description;
 
 }
