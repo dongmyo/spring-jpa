@@ -16,5 +16,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "Members")
 public class Member {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "member_id")
+    private Long memberId;
+
+    private String name;
+
+    @Column(name = "create_dt")
+    private LocalDateTime createDate;
 
 }
