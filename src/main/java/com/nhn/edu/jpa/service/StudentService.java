@@ -32,26 +32,29 @@ public class StudentService {
 
         courseRepository.saveAll(Arrays.asList(course1, course2));
 
+        Student student1 = new Student();
+        student1.setName("nhn");
+
         Enrollment enrollment1 = new Enrollment();
         enrollment1.setCourse(course1);
         enrollment1.setEnrolledAt(LocalDateTime.now());
+        enrollment1.setStudent(student1);
 
         Enrollment enrollment2 = new Enrollment();
         enrollment2.setCourse(course2);
         enrollment2.setEnrolledAt(LocalDateTime.now());
-
-        Enrollment enrollment3 = new Enrollment();
-        enrollment3.setCourse(course1);
-        enrollment3.setEnrolledAt(LocalDateTime.now());
-
-        Student student1 = new Student();
-        student1.setName("nhn");
+        enrollment2.setStudent(student1);
 
         student1.getEnrollments().add(enrollment1);
         student1.getEnrollments().add(enrollment2);
 
         Student student2 = new Student();
         student2.setName("dooray");
+
+        Enrollment enrollment3 = new Enrollment();
+        enrollment3.setCourse(course1);
+        enrollment3.setEnrolledAt(LocalDateTime.now());
+        enrollment3.setStudent(student2);
 
         student2.getEnrollments().add(enrollment3);
 

@@ -29,6 +29,7 @@ public class Student {
     @Column(name = "student_name")
     private String name;
 
+    // TODO #1: 양방향 연관관계로 바꾸기
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "student_id")
     private List<Enrollment> enrollments = new ArrayList<>();

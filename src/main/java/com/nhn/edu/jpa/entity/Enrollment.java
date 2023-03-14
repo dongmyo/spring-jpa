@@ -32,4 +32,6 @@ public class Enrollment {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    // TODO #2: 양방향 연관관계로 바꾸기
+    private Student student;
 }
