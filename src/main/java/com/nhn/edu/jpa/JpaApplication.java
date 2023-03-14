@@ -20,6 +20,7 @@ public class JpaApplication {
 	CommandLineRunner onStartUp(StudentService studentService) {
 		return args -> {
 			studentService.setUp();
+			studentService.getAllEnrolledCourses();
 		};
 	}
 

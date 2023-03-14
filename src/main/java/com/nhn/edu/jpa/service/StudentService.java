@@ -7,6 +7,9 @@ import com.nhn.edu.jpa.repository.CourseRepository;
 import com.nhn.edu.jpa.repository.StudentRepository;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +62,16 @@ public class StudentService {
         student2.getEnrollments().add(enrollment3);
 
         studentRepository.saveAll(Arrays.asList(student1, student2));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Course> getAllEnrolledCourses() {
+        return studentRepository.getStudentsWithAssociations()
+            .stream()
+            .map(Student::getEnrollments)
+            .flatMap(Collection::stream)
+            .map(Enrollment::getCourse)
+            .collect(Collectors.toList());
     }
 
 }

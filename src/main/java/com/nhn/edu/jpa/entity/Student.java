@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -29,7 +28,6 @@ public class Student {
     @Column(name = "student_name")
     private String name;
 
-    // TODO #1: 양방향 연관관계로 바꾸기
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "student")
     private List<Enrollment> enrollments = new ArrayList<>();
 
