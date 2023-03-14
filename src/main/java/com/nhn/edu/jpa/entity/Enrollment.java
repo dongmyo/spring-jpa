@@ -33,5 +33,7 @@ public class Enrollment {
     private Course course;
 
     // TODO #2: 양방향 연관관계로 바꾸기
+    @ManyToOne
+    @JoinColumn(name = "student_id")
     private Student student;
 }
